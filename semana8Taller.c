@@ -1,4 +1,7 @@
+//TALLER SEMANA 8
+//AGUIRRE REMIGIO-MACÍAS ISSAC-HIDALGO MATEO
 #include "libS8.h"
+
 void main(){
     struct Recursos recurso[maxRecursos];
     struct Productos producto[maxProductos];
