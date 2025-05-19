@@ -8,7 +8,7 @@
 #include <time.h>
 //CONSTANTES
 #define maxRecursos 25
-#define maxProductos 2
+#define maxProductos 5
 //VARIABLES GLOBALES
 int nR,cR,opcion;
 //ESTRUCTURAS    
