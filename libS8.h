@@ -1,3 +1,5 @@
+//TALLER SEMANA 8
+//AGUIRRE REMIGIO-MACÍAS ISSAC-HIDALGO MATEO
 //LIBRERIAS
 #include <stdio.h>
 #include <stdbool.h>
