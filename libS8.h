@@ -15,19 +15,17 @@ int nR,cR,opcion;
 struct Recursos{
     char nombre[50];
     float cantidad;
-    int id;};
-
+    int id;
+    char magnitud[50];};
 struct CantidadRecursos{
     int id;   
     float cantidad; };
-
 struct Productos{
     char nombre[50];
     int cantRecursos;
     struct CantidadRecursos caR[maxRecursos];
     float mP;//Minutos de produccion
     int id;};
-
 int idRandom(){
     return (rand() % (9999 - 1000 + 1) + 1000);
 }
@@ -46,6 +44,12 @@ int buscarProductoPorID(struct Productos producto[], int n, int idBuscado) {
         }
     }
     return -1;
+}
+void limpiarSaltoLinea(char* cadena) {
+int len = strlen(cadena);
+if (len > 0 && cadena[len - 1] == '\n') {
+cadena[len - 1] = '\0';
+}
 }
 void printBienvenida(){
 printf("----------------BIENVENIDO A Opti-Fab----------------\n");
