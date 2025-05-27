@@ -176,14 +176,7 @@ A:
                             printIdProductoInvalid();
                             goto J;}
                 K:
-                    printf("-----------------------------------------------------\n");
-                    printf("| MENU DE EDICION DEL PRODUCTO #%d: %s\n",l+1,producto[l].nombre);
-                    printf("-----------------------------------------------------\n");
-                    printf("|1. EDITAR NOMBRE\n");
-                    printf("|2. EDITAR MATERIALES REQUERIDOS PARA FABRICAR 1 %s\n",producto[l].nombre);
-                    printf("|3. EDITAR TIEMPO DE FABRICACION DE 1 %s\n",producto[l].nombre);
-                    printf("|4. SALIR\n");
-                    printf("-----------------------------------------------------\n|");
+                    printMenuEdicionP();
                     scanf("%d",&opC2);
                     getchar();//LIMPIAR EL SALTO DE LINEA /n que se genera al dar enter para el fget
                         switch (opC2){
