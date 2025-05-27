@@ -265,6 +265,17 @@ A:
                 goto F;
 
                 case 4:
+                printf("-----------------------------------------------------\n");
+                for (int id = 1000; id < 10000; id++) {
+                    int idx = buscarProductoPorID(producto, maxProductos, id);
+                    if (idx != -1) {
+                        printf("| Producto #%d:\n", idx + 1);
+                        printf("| NOMBRE: %s ID: %d\n", producto[idx].nombre, producto[idx].id);
+                        printf("-----------------------------------------------------\n");}
+                }
+                goto F;
+
+                case 5:
                 break;
 
                 default:
