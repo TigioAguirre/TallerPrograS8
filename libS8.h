@@ -67,6 +67,7 @@ printf("|4. MOSTRAR PRODUCTOS\n");
 printf("|5. SALIR\n");
 printf("-----------------------------------------------------\n|");
 }
+
 void printCantRecursosInvalid(){
 printf("-----------------------------------------------------\n");
 printf("---Cantidad de Recursos Invalida, ingrese de nuevo---\n");
