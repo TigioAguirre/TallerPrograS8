@@ -67,17 +67,6 @@ printf("|4. MOSTRAR PRODUCTOS\n");
 printf("|5. SALIR\n");
 printf("-----------------------------------------------------\n|");
 }
-void printMenuEdicionP(){
-printf("-----------------------------------------------------\n");
-printf("| MENU DE EDICION DEL PRODUCTO #%d: %s\n",l+1,producto[l].nombre);
-printf("-----------------------------------------------------\n");
-printf("|1. EDITAR NOMBRE\n");
-printf("|2. EDITAR MATERIALES REQUERIDOS PARA FABRICAR 1 %s\n",producto[l].nombre);
-printf("|3. EDITAR TIEMPO DE FABRICACION DE 1 %s\n",producto[l].nombre);
-printf("|4. SALIR AL MENU PRINCIPAL\n");
-printf("-----------------------------------------------------\n|");
-}
-
 void printCantRecursosInvalid(){
 printf("-----------------------------------------------------\n");
 printf("---Cantidad de Recursos Invalida, ingrese de nuevo---\n");
