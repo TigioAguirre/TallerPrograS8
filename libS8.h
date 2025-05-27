@@ -8,7 +8,7 @@
 #include <time.h>
 //CONSTANTES
 #define maxRecursos 25
-#define maxProductos 5
+#define maxProductos 2
 //VARIABLES GLOBALES
 int nR,cR,opcion;
 //ESTRUCTURAS    
@@ -63,7 +63,8 @@ printf("-----------------------------------------------------\n");
 printf("|1. CONSULTAR PRODUCCION POR DEMANDA\n");
 printf("|2. EDICION DE PRODUCTOS\n");
 printf("|3. ELIMINACION DE PRODUCTOS\n");
-printf("|4. SALIR\n");
+printf("|4. MOSTRAR PRODUCTOS\n");
+printf("|5. SALIR\n");
 printf("-----------------------------------------------------\n|");
 }
 
