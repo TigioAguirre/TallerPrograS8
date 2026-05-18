@@ -506,3 +506,222 @@ A:
     </children>
   </grid>
 </form>
+
+
+
+
+
+    package ec.edu.evaluacion;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+public class Ventana extends JFrame {
+    // Declaración de los componentes "bindeados" desde el archivo .form
+    private JPanel panel1;
+    private JTabbedPane tabbedPane1;
+    private JComboBox<String> comboBox1;
+    private JSpinner spinner1;
+    private JTextField textField1; // Nombre
+    private JTextField textField2; // Promedio
+    private JButton AGREGARESTUDIANTEButton;
+    private JList<Estudiante> list1;
+    
+    private JTextField txtCodigo; // Actúa como entrada tanto para código como para nombre
+    private JButton btnBuscar;
+    private JButton btnListar; // En el form tiene el texto "BUSCAR POR NOMBRE"
+    private JButton btnOrdenar;
+    private JButton ORDENARPORCODIGOASCENDENTEButton;
+    private JList<Estudiante> list2;
+    
+    private JTextArea textArea1;
+
+    // Lógica e Integración
+    private GestionEstudiantes gestion;
+    private DefaultListModel<Estudiante> modeloLista1;
+    private DefaultListModel<Estudiante> modeloLista2;
+
+    public Ventana() {
+        // Configuración básica de la ventana
+        setContentPane(panel1);
+        setTitle("Sistema de Gestión Académica - Programación III");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(700, 500);
+        setLocationRelativeTo(null); // Centrar en la pantalla
+
+        // Inicializar la lógica y los modelos de las listas
+        gestion = new GestionEstudiantes();
+        modeloLista1 = new DefaultListModel<>();
+        modeloLista2 = new DefaultListModel<>();
+        list1.setModel(modeloLista1);
+        list2.setModel(modeloLista2);
+
+        // Evitar que el spinner tenga valores negativos o nulos
+        spinner1.setModel(new SpinnerNumberModel(1, 1, 99999, 1));
+
+        // Cargar los datos precargados en la pestaña 1
+        actualizarLista1();
+
+        // ==========================================
+        // EVENTOS DE LA PESTAÑA 1: REGISTRO
+        // ==========================================
+        AGREGARESTUDIANTEButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                agregarEstudiante();
+            }
+        });
+
+        // ==========================================
+        // EVENTOS DE LA PESTAÑA 2: BÚSQUEDA Y ORDENAMIENTO
+        // ==========================================
+        btnBuscar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarPorCodigo();
+            }
+        });
+
+        btnListar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarPorNombre();
+            }
+        });
+
+        btnOrdenar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ordenarPorPromedio();
+            }
+        });
+
+        ORDENARPORCODIGOASCENDENTEButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ordenarPorCodigo();
+            }
+        });
+
+        // ==========================================
+        // EVENTOS DE LA PESTAÑA 3: RECURSIVIDAD
+        // ==========================================
+        // Se actualiza automáticamente cada vez que el usuario entra a la pestaña 3
+        tabbedPane1.addChangeListener(e -> {
+            if (tabbedPane1.getSelectedIndex() == 2) {
+                actualizarRecursividad();
+            }
+        });
+    }
+
+    // --- MÉTODOS DE INTEGRACIÓN Y LÓGICA ---
+
+    private void actualizarLista1() {
+        modeloLista1.clear();
+        // Usamos este método para obtener la lista actual y poblar el JList
+        ArrayList<Estudiante> estudiantes = gestion.ordenarPorCodigoAscendente();
+        for (Estudiante est : estudiantes) {
+            modeloLista1.addElement(est);
+        }
+    }
+
+    private void agregarEstudiante() {
+        try {
+            int codigo = (int) spinner1.getValue();
+            String nombre = textField1.getText().trim();
+            String carrera = (String) comboBox1.getSelectedItem();
+            double promedio = Double.parseDouble(textField2.getText().trim());
+
+            if (nombre.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            Estudiante nuevo = new Estudiante(codigo, nombre, carrera, promedio);
+            boolean exito = gestion.agregarEstudiante(nuevo);
+
+            if (exito) {
+                JOptionPane.showMessageDialog(this, "Estudiante agregado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                actualizarLista1();
+                // Limpiar campos
+                textField1.setText("");
+                textField2.setText("");
+            } else {
+                JOptionPane.showMessageDialog(this, "El código del estudiante ya existe. Intente con otro.", "Error de Unicidad", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un promedio válido (número).", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void buscarPorCodigo() {
+        try {
+            int codigo = Integer.parseInt(txtCodigo.getText().trim());
+            Estudiante encontrado = gestion.buscarPorCodigoBinario(codigo);
+            
+            modeloLista2.clear();
+            if (encontrado != null) {
+                modeloLista2.addElement(encontrado);
+            } else {
+                JOptionPane.showMessageDialog(this, "Estudiante no encontrado por código.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "El código debe ser un número entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void buscarPorNombre() {
+        String nombre = txtCodigo.getText().trim();
+        if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese un nombre para buscar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Estudiante encontrado = gestion.buscarPorNombreSecuencial(nombre);
+        modeloLista2.clear();
+        if (encontrado != null) {
+            modeloLista2.addElement(encontrado);
+        } else {
+            JOptionPane.showMessageDialog(this, "Estudiante no encontrado por nombre.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private void ordenarPorPromedio() {
+        ArrayList<Estudiante> ordenados = gestion.ordenarPorPromedioDescendente();
+        modeloLista2.clear();
+        for (Estudiante est : ordenados) {
+            modeloLista2.addElement(est);
+        }
+    }
+
+    private void ordenarPorCodigo() {
+        ArrayList<Estudiante> ordenados = gestion.ordenarPorCodigoAscendente();
+        modeloLista2.clear();
+        for (Estudiante est : ordenados) {
+            modeloLista2.addElement(est);
+        }
+    }
+
+    private void actualizarRecursividad() {
+        int total = gestion.contarRecursivo(0);
+        double promedioGral = gestion.promedioGeneralRecursivo();
+        double mayorPromedio = gestion.mayorPromedioRecursivo(0);
+
+        String reporte = "=== REPORTE RECURSIVO ===\n\n" +
+                "Total de estudiantes: " + total + "\n" +
+                "Promedio General (Suma Recursiva): " + String.format("%.2f", promedioGral) + "\n" +
+                "Mayor Promedio Registrado: " + String.format("%.2f", mayorPromedio) + "\n";
+
+        textArea1.setText(reporte);
+    }
+
+    // Método Main para probar la ventana directamente si lo deseas
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            Ventana v = new Ventana();
+            v.setVisible(true);
+        });
+    }
+}
